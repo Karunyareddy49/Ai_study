@@ -1,0 +1,11 @@
+templates/ask.html
+templates/create_schedule.html
+templates/error.html
+templates/home.html
+templates/index.html
+templates/questions.html
+templates/quiz.html
+templates/quiz_result.html
+templates/study_schedule.html
+templates/subject_page1.html
+templates/view_schedule.html
