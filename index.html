@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Study Buddy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="hero">
+    <h1>📘 Smart Study Buddy</h1>
+    <p>Your AI-powered learning companion</p>
+</header>
+
+<section class="subjects">
+    {% for sub in subjects %}
+    <a href="{{ url_for('subject_page', sub=subject) }}" class="card">
+        <div class="icon">📚</div>
+        <h3>{{ sub }}</h3>
+        <p>Practice AI-generated quizzes</p>
+    </a>
+    {% endfor %}
+</section>
+
+<footer>
+    <p>Built with ❤️ using Flask & Gemini AI</p>
+</footer>
+
+</body>
+</html>

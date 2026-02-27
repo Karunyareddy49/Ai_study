@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ask AI - {{ subject }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f8ff; }
+    input, textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; border: none; border-radius: 5px; background: #6fa8dc; color: #fff; cursor: pointer; }
+    button:hover { background: #3d85c6; }
+    </style>
+</head>
+<body><h1>Ask AI – {{ subject }}</h1>
+
+<form method="POST">
+    <input type="text" name="question" required placeholder="Ask your question">
+    <button type="submit">Ask</button>
+</form>
+
+{% if question %}
+<p><strong>You asked:</strong> {{ question }}</p>
+{% endif %}
+
+{% if answer %}
+<div style="border:1px solid #ccc; padding:10px; margin-top:10px;">
+    <strong>AI Answer:</strong><br>
+    {{ answer | safe }}
+</div>
+{% endif %}
+
+</body>
+</html>

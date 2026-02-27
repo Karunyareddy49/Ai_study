@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Study Schedule - Smart Study Buddy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Poppins, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-card h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .form-card p {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .preset-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .preset-option {
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .preset-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .preset-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+        }
+
+        .preset-option input[type="radio"] {
+            display: none;
+        }
+
+        .preset-option h3 {
+            color: #2d3748;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .preset-option p {
+            color: #718096;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .subjects-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .subject-tag-input {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            color: #667eea;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .add-subject-btn {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-subject-btn:hover {
+            background: #5568d3;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .custom-fields {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 15px;
+        }
+
+        .custom-fields.active {
+            display: block;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea15, #764ba215);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box p {
+            color: #2d3748;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .preset-selector, .row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/study-schedule" class="back-link">← Back to Schedules</a>
+        
+        <div class="form-card">
+            <h1>📚 Create Study Schedule</h1>
+            <p>Plan your exam preparation with a structured study schedule</p>
+
+            <div class="info-box">
+                <p>💡 Choose a preset exam or create a custom schedule tailored to your needs</p>
+            </div>
+
+            <form method="POST" id="scheduleForm">
+                <div class="form-group">
+                    <label>Select Exam Type</label>
+                    <div class="preset-selector">
+                        {% for key, preset in exam_presets.items() %}
+                        <label class="preset-option" data-preset="{{ key }}">
+                            <input type="radio" name="exam_type" value="{{ key }}" 
+                                   {% if key == 'GATE' %}checked{% endif %}
+                                   onchange="handlePresetChange('{{ key }}')">
+                            <h3>{{ preset.name.split('(')[0] }}</h3>
+                            <p>{{ preset.duration_weeks }} weeks</p>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div id="customFields" class="custom-fields">
+                    <div class="form-group">
+                        <label for="custom_name">Custom Schedule Name *</label>
+                        <input type="text" id="custom_name" name="custom_name" 
+                               placeholder="e.g., My Semester Exam Preparation">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="start_date">Start Date</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ today }}" required>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="weeks">Duration (Weeks)</label>
+                        <input type="number" id="weeks" name="weeks" 
+                               value="24" min="1" max="104" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hours_per_day">Study Hours/Day</label>
+                        <input type="number" id="hours_per_day" name="hours_per_day" 
+                               value="4" min="1" max="16" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Subjects</label>
+                    <div id="subjectsList" class="subjects-input">
+                        <!-- Subjects will be added here dynamically -->
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <input type="text" id="newSubject" placeholder="Add a subject..." 
+                               style="width: calc(100% - 120px); display: inline-block;">
+                        <button type="button" class="add-subject-btn" onclick="addSubject()">+ Add</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">🚀 Create Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const examPresets = {{ exam_presets | tojson }};
+        let currentPreset = 'GATE';
+
+        // Initialize with GATE preset
+        document.addEventListener('DOMContentLoaded', function() {
+            handlePresetChange('GATE');
+            
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start_date').value = today;
+        });
+
+        function handlePresetChange(presetKey) {
+            currentPreset = presetKey;
+            const preset = examPresets[presetKey];
+            
+            // Update visual selection
+            document.querySelectorAll('.preset-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.querySelector(`[data-preset="${presetKey}"]`).classList.add('selected');
+            
+            // Show/hide custom fields
+            const customFields = document.getElementById('customFields');
+            if (presetKey === 'Custom') {
+                customFields.classList.add('active');
+                document.getElementById('custom_name').required = true;
+            } else {
+                customFields.classList.remove('active');
+                document.getElementById('custom_name').required = false;
+            }
+            
+            // Update duration
+            document.getElementById('weeks').value = preset.duration_weeks;
+            
+            // Update subjects
+            const subjectsList = document.getElementById('subjectsList');
+            subjectsList.innerHTML = '';
+            preset.subjects.forEach(subject => {
+                addSubjectTag(subject);
+            });
+        }
+
+        function addSubject() {
+            const input = document.getElementById('newSubject');
+            const subject = input.value.trim();
+            
+            if (subject) {
+                addSubjectTag(subject);
+                input.value = '';
+            }
+        }
+
+        function addSubjectTag(subject) {
+            const subjectsList = document.getElementById('subjectsList');
+            const tag = document.createElement('div');
+            tag.style.cssText = 'display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #667eea15, #764ba215); color: #667eea; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem;';
+            tag.innerHTML = `
+                <input type="hidden" name="subjects" value="${subject}">
+                <span>${subject}</span>
+                <button type="button" onclick="this.parentElement.remove()" 
+                        style="background: none; border: none; color: #667eea; cursor: pointer; font-weight: bold; padding: 0 5px;">×</button>
+            `;
+            subjectsList.appendChild(tag);
+        }
+
+        // Allow Enter key to add subject
+        document.getElementById('newSubject').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSubject();
+            }
+        });
+    </script>
+</body>
+</html>
