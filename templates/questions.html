@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }} Questions</title>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; background: linear-gradient(135deg, #74ebd5, #ACB6E5); min-height: 100vh; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { text-align: center; color: white; font-size: 2.5rem; margin-bottom: 30px; }
+        .question { background: rgba(255,255,255,0.95); padding: 25px; margin: 20px 0; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        .question h3 { color: #333; margin: 0 0 15px; font-size: 1.3rem; }
+        .question p { color: #555; font-size: 1.1rem; margin: 0; line-height: 1.6; }
+        .btn { display: inline-block; padding: 12px 30px; margin: 10px; background: linear-gradient(135deg, #6A82FB, #FC5C7D); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; }
+        .btn:hover { transform: translateY(-3px); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 {{ subject }} Questions</h1>
+        
+        {% if questions %}
+            {% for question, answer in questions.items() %}
+            <div class="question">
+                <h3>❓ {{ question }}</h3>
+                <p><strong>✅ {{ answer }}</strong></p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="question">
+                <p>No questions yet for {{ subject }}. <a href="{{ url_for('ask_ai2', sub=subject) }}" style="color: #6A82FB;">Try AI instead!</a></p>
+            </div>
+        {% endif %}
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="{{ url_for('subject_page', sub=subject) }}" class="btn">← Back to {{ subject }}</a>
+            <a href="{{ url_for('home') }}" class="btn">🏠 Home</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }} Quiz Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- MathJax for formulas -->
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>{{ subject }} Quiz Result</h1>
+    <p>Your Score: {{ score }} / {{ total }}</p>
+    <hr>
+
+    {% for res in results %}
+        <div class="question-block">
+            <p><strong>Question {{ loop.index }}:</strong> {{ res.question | safe }}</p>
+            <ul>
+            {% for option in res.options %}
+                <li
+                  {% if option == res.correct %} style="color:green; font-weight:bold;" {% endif %}
+                  {% if option == res.selected and option != res.correct %} style="color:red;" {% endif %}
+                >
+                    {{ option | safe }}
+                    {% if option == res.selected %} (Your choice) {% endif %}
+                    {% if option == res.correct %} (Correct answer) {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <hr>
+    {% endfor %}
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</div>
+</body>
+</html>
+
+
